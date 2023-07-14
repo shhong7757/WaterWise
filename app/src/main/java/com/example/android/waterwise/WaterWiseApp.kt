@@ -52,8 +52,8 @@ fun BottomNavigation(navController: NavController) {
                 selected = selectedItem == index,
                 onClick = {
                     selectedItem = index
-                    when (index) {
-                        0 -> navController.navigate("home")
+                    when (item) {
+                        "Home" -> navController.navigate("home")
                     }
                 }
             )
