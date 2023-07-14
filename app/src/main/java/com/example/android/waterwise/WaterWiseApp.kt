@@ -12,7 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.android.waterwise.ui.screen.HomeScreen
+import com.example.android.waterwise.ui.screen.home.HomeScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

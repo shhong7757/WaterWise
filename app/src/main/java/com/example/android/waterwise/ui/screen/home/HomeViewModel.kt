@@ -1,4 +1,4 @@
-package com.example.android.waterwise.ui.screen
+package com.example.android.waterwise.ui.screen.home
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

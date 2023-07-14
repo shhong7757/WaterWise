@@ -6,7 +6,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.android.waterwise.WaterWiseApplication
-import com.example.android.waterwise.ui.screen.HomeViewModel
+import com.example.android.waterwise.ui.screen.home.HomeViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {

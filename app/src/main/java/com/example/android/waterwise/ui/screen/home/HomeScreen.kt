@@ -1,4 +1,4 @@
-package com.example.android.waterwise.ui.screen
+package com.example.android.waterwise.ui.screen.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
