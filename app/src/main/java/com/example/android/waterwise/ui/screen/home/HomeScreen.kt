@@ -46,7 +46,11 @@ fun Today() {
 
 @Composable
 fun CurrentHydrationStatus(uiState: HomeUiState) {
-    Text(text = "오늘 수분 섭취량 : " + uiState.currentAmountOfHydration.toString())
+    Column() {
+        Text(text = "오늘 수분 섭취량 : " + uiState.currentAmountOfHydration.toString())
+        Text(text = "목표 수분 섭취량 : " + uiState.goalHydrationAmount.toString())
+    }
+
 }
 
 @Composable

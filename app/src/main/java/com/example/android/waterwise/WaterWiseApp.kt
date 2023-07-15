@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.android.waterwise.ui.screen.home.HomeScreen
+import com.example.android.waterwise.ui.screen.setting.SettingScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,13 +37,14 @@ fun WaterWiseApp() {
 fun NavigationGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "home") {
         composable("home") { HomeScreen() }
+        composable("setting") { SettingScreen() }
     }
 }
 
 @Composable
 fun BottomNavigation(navController: NavController) {
     var selectedItem by remember { mutableStateOf(0) }
-    val items = listOf("Home")
+    val items = listOf("Home", "Setting")
 
     NavigationBar {
         items.forEachIndexed { index, item ->
@@ -54,6 +56,7 @@ fun BottomNavigation(navController: NavController) {
                     selectedItem = index
                     when (item) {
                         "Home" -> navController.navigate("home")
+                        "Setting" -> navController.navigate("setting")
                     }
                 }
             )

@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.waterwise.data.DailyHydrationRecord
+import com.example.android.waterwise.data.UserPreferencesRepository
 import com.example.android.waterwise.data.room.DailyHydrationRecordRepository
 import com.example.android.waterwise.model.Beverage
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,13 +16,22 @@ import java.time.format.DateTimeFormatter
 
 class HomeViewModel(
     savedStateHandle: SavedStateHandle,
-    private val dailyHydrationRecordRepository: DailyHydrationRecordRepository
+    private val dailyHydrationRecordRepository: DailyHydrationRecordRepository,
+    private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState(bottomSheetVisibility = false))
     val uiState: StateFlow<HomeUiState> = _uiState
 
     init {
+        fetchGoalHydrationAmount()
         observeDailyHydrationRecord()
+    }
+
+    private fun fetchGoalHydrationAmount() {
+        viewModelScope.launch {
+            val goalHydrationAmount = userPreferencesRepository.getGoalHydrationAmount()
+            _uiState.value = _uiState.value.copy(goalHydrationAmount = goalHydrationAmount)
+        }
     }
 
     private fun observeDailyHydrationRecord() {
@@ -71,5 +81,6 @@ class HomeViewModel(
 
 data class HomeUiState(
     val bottomSheetVisibility: Boolean,
-    val currentAmountOfHydration: Int = 0
+    val currentAmountOfHydration: Int = 0,
+    val goalHydrationAmount: Int = 0,
 )
