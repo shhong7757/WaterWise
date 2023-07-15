@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">WaterWise</string>
+    <string name="hydrate">섭취하기</string>
+    <string name="water">물</string>
+    <string name="coffee">커피</string>
 </resources>

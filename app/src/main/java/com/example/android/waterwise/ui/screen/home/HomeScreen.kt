@@ -5,8 +5,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.android.waterwise.ui.AppViewModelProvider
+import com.example.android.waterwise.ui.components.HydrateForm
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -18,9 +20,23 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel(factory = AppViewModelProvid
         Today()
         CurrentHydrationStatus(uiState)
         HydrateButton(onHydrate = {
-            viewModel.insertDailyHydrationRecord()
+            if (uiState.bottomSheetVisibility) {
+                viewModel.hideBottomSheet()
+            } else {
+                viewModel.showBottomSheet()
+            }
         })
+        if (uiState.bottomSheetVisibility) {
+            HydrateForm(
+                context = LocalContext.current,
+                onHydrateRequest = { amount, beverage ->
+                    viewModel.insertDailyHydrationRecord(amount, beverage)
+                }
+            )
+        }
     }
+
+
 }
 
 @Composable
@@ -36,6 +52,6 @@ fun CurrentHydrationStatus(uiState: HomeUiState) {
 @Composable
 fun HydrateButton(onHydrate: () -> Unit) {
     Button(onClick = onHydrate) {
-        Text(text = "수분 보충 + 30")
+        Text(text = "수분 보충")
     }
 }

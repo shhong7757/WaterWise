@@ -5,10 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.waterwise.data.DailyHydrationRecord
 import com.example.android.waterwise.data.room.DailyHydrationRecordRepository
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -16,43 +15,60 @@ import java.time.format.DateTimeFormatter
 class HomeViewModel(
     savedStateHandle: SavedStateHandle,
     private val dailyHydrationRecordRepository: DailyHydrationRecordRepository
-
 ) : ViewModel() {
-    private val date: String = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
+    private val _uiState = MutableStateFlow(HomeUiState(bottomSheetVisibility = false))
+    val uiState: StateFlow<HomeUiState> = _uiState
 
-    val uiState: StateFlow<HomeUiState> =
-        dailyHydrationRecordRepository.getAllHydrationAmountStream(date).map {
-            val amountOfHydration =
-                it.map { dailyHydrationRecord -> dailyHydrationRecord.hydrationAmount }
-                    .fold(
-                        0
-                    ) { totalAmountOfHydration,
-                        hydrationAmount ->
+    init {
+        observeDailyHydrationRecord()
+    }
+
+    private fun observeDailyHydrationRecord() {
+        viewModelScope.launch {
+            val date: String = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
+            dailyHydrationRecordRepository.getAllHydrationAmountStream(
+                date
+            ).map {
+                it.map { dailyHydrationRecord -> dailyHydrationRecord.amount }
+                    .fold(0) { totalAmountOfHydration, hydrationAmount ->
                         totalAmountOfHydration + hydrationAmount
                     }
-            HomeUiState(currentAmountOfHydration = amountOfHydration)
-        }.stateIn(
-            scope = viewModelScope,
-            initialValue = HomeUiState(currentAmountOfHydration = 0),
-            started = SharingStarted.WhileSubscribed()
-        )
+            }.collect { currentAmountOfHydration ->
+                _uiState.value =
+                    _uiState.value.copy(currentAmountOfHydration = currentAmountOfHydration)
+            }
+        }
+    }
 
-    fun insertDailyHydrationRecord() {
+    fun insertDailyHydrationRecord(amount: Int, beverage: String) {
         viewModelScope.launch {
-            val today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-            val hydrationAmount = 30
+            val today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
             dailyHydrationRecordRepository.insertDailyHydrationRecord(
                 DailyHydrationRecord(
+                    amount = amount,
+                    beverage = beverage,
                     date = today,
-                    hydrationAmount = hydrationAmount
                 )
             )
+
+            _uiState.value = _uiState.value.copy(bottomSheetVisibility = false)
         }
+    }
 
+    fun hideBottomSheet() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(bottomSheetVisibility = false)
+        }
+    }
 
+    fun showBottomSheet() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(bottomSheetVisibility = true)
+        }
     }
 }
 
 data class HomeUiState(
-    val currentAmountOfHydration: Int
+    val bottomSheetVisibility: Boolean,
+    val currentAmountOfHydration: Int = 0
 )
