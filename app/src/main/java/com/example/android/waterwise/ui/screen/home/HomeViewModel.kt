@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.waterwise.data.DailyHydrationRecord
 import com.example.android.waterwise.data.room.DailyHydrationRecordRepository
+import com.example.android.waterwise.model.Beverage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -40,7 +41,7 @@ class HomeViewModel(
         }
     }
 
-    fun insertDailyHydrationRecord(amount: Int, beverage: String) {
+    fun insertDailyHydrationRecord(amount: Int, beverage: Beverage) {
         viewModelScope.launch {
             val today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
             dailyHydrationRecordRepository.insertDailyHydrationRecord(

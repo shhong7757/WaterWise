@@ -27,7 +27,7 @@ import com.example.android.waterwise.model.Beverage
 @Composable
 fun HydrateForm(
     context: Context,
-    onHydrateRequest: (amount: Int, beverage: String) -> Unit
+    onHydrateRequest: (amount: Int, beverage: Beverage) -> Unit
 ) {
     val amount = remember { mutableStateOf(0) }
     val selectedBeverage = remember { mutableStateOf(Beverage.Water) }
@@ -53,7 +53,7 @@ fun HydrateForm(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
         )
         Button(onClick = {
-            onHydrateRequest(amount.value, selectedBeverage.value.getLabel(context))
+            onHydrateRequest(amount.value, selectedBeverage.value)
 
             amount.value = 0
             selectedBeverage.value = Beverage.Water
