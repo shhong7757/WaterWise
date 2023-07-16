@@ -1,21 +1,22 @@
 package com.example.android.waterwise.ui.screen.home
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.waterwise.data.DailyHydrationRecord
 import com.example.android.waterwise.data.UserPreferencesRepository
 import com.example.android.waterwise.data.room.DailyHydrationRecordRepository
 import com.example.android.waterwise.model.Beverage
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
-class HomeViewModel(
-    savedStateHandle: SavedStateHandle,
+@HiltViewModel
+class HomeViewModel @Inject constructor(
     private val dailyHydrationRecordRepository: DailyHydrationRecordRepository,
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {

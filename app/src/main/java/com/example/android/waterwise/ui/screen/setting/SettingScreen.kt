@@ -10,11 +10,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.android.waterwise.ui.AppViewModelProvider
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun SettingScreen(viewModel: SettingViewModel = viewModel(factory = AppViewModelProvider.Factory)) {
+fun SettingScreen(viewModel: SettingViewModel = hiltViewModel()) {
     val uiState = viewModel.uiState.collectAsState().value
 
     val inputGoalHydrationAmount = remember { mutableStateOf(0) }

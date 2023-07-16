@@ -9,8 +9,9 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.io.IOException
+import javax.inject.Inject
 
-class UserPreferencesRepository(private val dataStore: DataStore<Preferences>) {
+class UserPreferencesRepository @Inject constructor(private val dataStore: DataStore<Preferences>) {
     private object PreferencesKeys {
         val GOAL_HYDRATION_AMOUNT = intPreferencesKey("goal_hydration_amount")
     }
@@ -25,7 +26,7 @@ class UserPreferencesRepository(private val dataStore: DataStore<Preferences>) {
         }.map { preferences ->
             preferences[PreferencesKeys.GOAL_HYDRATION_AMOUNT] ?: 2000
         }
-        
+
         return flow.first()
     }
 

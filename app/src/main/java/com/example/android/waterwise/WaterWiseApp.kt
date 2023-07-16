@@ -15,7 +15,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.android.waterwise.ui.screen.home.HomeScreen
 import com.example.android.waterwise.ui.screen.setting.SettingScreen
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WaterWiseApp() {
     val navController = rememberNavController()

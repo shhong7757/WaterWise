@@ -3,12 +3,16 @@ package com.example.android.waterwise.ui.screen.setting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.waterwise.data.UserPreferencesRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SettingViewModel(private val userPreferencesRepository: UserPreferencesRepository) :
-    ViewModel() {
+@HiltViewModel
+class SettingViewModel @Inject constructor(
+    private val userPreferencesRepository: UserPreferencesRepository
+) : ViewModel() {
     private val _uiState = MutableStateFlow(SettingUiState(goalHydrationAmount = 2000))
     val uiState: StateFlow<SettingUiState> = _uiState
 
