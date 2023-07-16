@@ -11,7 +11,6 @@ import com.example.android.waterwise.data.UserProfile
 import com.example.android.waterwise.model.Sex
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
@@ -37,8 +36,8 @@ class UserPreferencesRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUserProfile(): UserProfile {
-        val flow = userProfileStore.data.catch { exception ->
+    override fun getUserProfile(): Flow<UserProfile> {
+        return userProfileStore.data.catch { exception ->
             if (exception is IOException) {
                 emit(SerializedUserProfile.getDefaultInstance())
             } else {
@@ -53,8 +52,6 @@ class UserPreferencesRepositoryImpl @Inject constructor(
                 }, height = it.height, width = it.width
             )
         }
-
-        return flow.first()
     }
 
     override suspend fun setGoalHydrationAmount(goalHydrationAmount: Int) {
@@ -79,6 +76,29 @@ class UserPreferencesRepositoryImpl @Inject constructor(
                         else -> 0
                     }
                 ).setWidth(userProfile.width ?: 0).build()
+        }
+    }
+
+    override suspend fun setUserHeight(height: Int) {
+        userProfileStore.updateData { preferences ->
+            preferences.toBuilder().setHeight(height).build()
+        }
+    }
+
+    override suspend fun setUserSex(sex: Sex) {
+        userProfileStore.updateData { preferences ->
+            preferences.toBuilder().setSex(sex.let {
+                when (it) {
+                    Sex.Man -> 1
+                    Sex.Woman -> 2
+                }
+            }).build()
+        }
+    }
+
+    override suspend fun setUserWeight(weight: Int) {
+        userProfileStore.updateData { preferences ->
+            preferences.toBuilder().setWidth(weight).build()
         }
     }
 }

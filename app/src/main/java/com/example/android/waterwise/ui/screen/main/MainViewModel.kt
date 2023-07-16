@@ -30,11 +30,9 @@ class MainViewModel @Inject constructor(
 
     private fun fetchGoalHydrationAmount() {
         viewModelScope.launch {
-            val userProfile = userPreferencesRepository.getUserProfile()
-            val goalHydrationAmount = userProfile.goalHydrationAmount
-
-            _uiState.value =
-                _uiState.value.copy(goalHydrationAmount = goalHydrationAmount)
+            userPreferencesRepository.getUserProfile().collect {
+                _uiState.value = _uiState.value.copy(goalHydrationAmount = it.goalHydrationAmount)
+            }
         }
     }
 

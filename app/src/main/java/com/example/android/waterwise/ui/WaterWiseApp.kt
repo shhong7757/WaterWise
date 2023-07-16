@@ -1,6 +1,5 @@
 package com.example.android.waterwise
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavHostController
@@ -12,6 +11,7 @@ import com.example.android.waterwise.ui.WaterWiseAppState
 import com.example.android.waterwise.ui.rememberWaterWiseAppState
 import com.example.android.waterwise.ui.screen.home.HomeScreen
 import com.example.android.waterwise.ui.screen.onboarding.OnBoardingScreen
+import com.example.android.waterwise.ui.screen.profile.ProfileScreen
 
 @Composable
 fun WaterWiseApp(
