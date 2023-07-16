@@ -1,6 +1,7 @@
 package com.example.android.waterwise.ui.screen.setting
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -11,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.android.waterwise.model.Sex
 
 @Composable
 fun SettingScreen(viewModel: SettingViewModel = hiltViewModel()) {
@@ -32,10 +34,27 @@ fun SettingScreen(viewModel: SettingViewModel = hiltViewModel()) {
             onClick = {
                 viewModel.setGoalHydrationAmount(inputGoalHydrationAmount.value)
                 inputGoalHydrationAmount.value = 0
-            },
-            enabled = inputGoalHydrationAmount.value != 0
+            }, enabled = inputGoalHydrationAmount.value != 0
         ) {
             Text(text = "적용")
+        }
+        Row() {
+            Text(text = "성별")
+            Text(
+                text = when (uiState.sex) {
+                    Sex.Man -> "남"
+                    Sex.Woman -> "여자"
+                    else -> ""
+                }
+            )
+        }
+        Row() {
+            Text(text = "키")
+            Text(text = uiState.height.toString())
+        }
+        Row() {
+            Text(text = "몸무게")
+            Text(text = uiState.weight.toString())
         }
     }
 }
