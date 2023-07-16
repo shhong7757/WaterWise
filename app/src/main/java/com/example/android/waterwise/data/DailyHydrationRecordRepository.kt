@@ -2,7 +2,7 @@ package com.example.android.waterwise.data
 
 import kotlinx.coroutines.flow.Flow
 
-interface  DailyHydrationRecordRepositoryInterface {
+interface  DailyHydrationRecordRepository {
     suspend fun insertDailyHydrationRecord(hydrationRecord: DailyHydrationRecord)
     suspend fun updateDailyHydrationRecord(hydrationRecord: DailyHydrationRecord)
     suspend fun deleteDailyHydrationRecord(hydrationRecord: DailyHydrationRecord)

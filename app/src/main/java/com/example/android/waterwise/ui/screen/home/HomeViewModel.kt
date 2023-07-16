@@ -3,8 +3,8 @@ package com.example.android.waterwise.ui.screen.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.waterwise.data.DailyHydrationRecord
-import com.example.android.waterwise.data.UserPreferencesRepository
-import com.example.android.waterwise.data.room.DailyHydrationRecordRepository
+import com.example.android.waterwise.data.datastore.UserPreferencesRepositoryImpl
+import com.example.android.waterwise.data.room.DailyHydrationRecordRepositoryImpl
 import com.example.android.waterwise.model.Beverage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,8 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val dailyHydrationRecordRepository: DailyHydrationRecordRepository,
-    private val userPreferencesRepository: UserPreferencesRepository
+    private val dailyHydrationRecordRepository: DailyHydrationRecordRepositoryImpl,
+    private val userPreferencesRepository: UserPreferencesRepositoryImpl
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState(bottomSheetVisibility = false))
     val uiState: StateFlow<HomeUiState> = _uiState

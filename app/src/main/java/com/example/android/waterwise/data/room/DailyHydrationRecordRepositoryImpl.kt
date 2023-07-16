@@ -2,13 +2,13 @@ package com.example.android.waterwise.data.room
 
 import com.example.android.waterwise.data.DailyHydrationRecord
 import com.example.android.waterwise.data.DailyHydrationRecordDao
-import com.example.android.waterwise.data.DailyHydrationRecordRepositoryInterface
+import com.example.android.waterwise.data.DailyHydrationRecordRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class DailyHydrationRecordRepository @Inject constructor(
+class DailyHydrationRecordRepositoryImpl @Inject constructor(
     private val dailyHydrationRecordDao: DailyHydrationRecordDao
-) : DailyHydrationRecordRepositoryInterface {
+) : DailyHydrationRecordRepository {
     override suspend fun insertDailyHydrationRecord(hydrationRecord: DailyHydrationRecord) =
         dailyHydrationRecordDao.insert(hydrationRecord)
 
