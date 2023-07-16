@@ -1,11 +1,9 @@
 package com.example.android.waterwise.data.datastore
 
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.emptyPreferences
-import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.*
 import com.example.android.waterwise.data.UserPreferencesRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -17,6 +15,7 @@ class UserPreferencesRepositoryImpl @Inject constructor(
 ) : UserPreferencesRepository {
     private object PreferencesKeys {
         val GOAL_HYDRATION_AMOUNT = intPreferencesKey("goal_hydration_amount")
+        val HAS_SHOW_ONGOING_SCREEN_BEFORE = booleanPreferencesKey("has_show_ongoing_screen_before")
     }
 
     override suspend fun getGoalHydrationAmount(): Int {
@@ -33,9 +32,27 @@ class UserPreferencesRepositoryImpl @Inject constructor(
         return flow.first()
     }
 
+    override fun getHasShowOngoingScreenBefore(): Flow<Boolean> {
+        return dataStore.data.catch { exception ->
+            if (exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }.map { preferences ->
+            preferences[PreferencesKeys.HAS_SHOW_ONGOING_SCREEN_BEFORE] ?: false
+        }
+    }
+
     override suspend fun setGoalHydrationAmount(goalHydrationAmount: Int) {
         dataStore.edit { preferences ->
             preferences[PreferencesKeys.GOAL_HYDRATION_AMOUNT] = goalHydrationAmount
+        }
+    }
+
+    override suspend fun setHasShowOngoingScreenBefore(hasShowOngoingScreenBefore: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.HAS_SHOW_ONGOING_SCREEN_BEFORE] = hasShowOngoingScreenBefore
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.android.waterwise.ui.screen.home
+package com.example.android.waterwise.ui.screen.main
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
@@ -12,7 +12,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
+fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
     val uiState = viewModel.uiState.collectAsState().value
 
     Column() {
@@ -34,8 +34,6 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
             )
         }
     }
-
-
 }
 
 @Composable
@@ -44,12 +42,11 @@ fun Today() {
 }
 
 @Composable
-fun CurrentHydrationStatus(uiState: HomeUiState) {
+fun CurrentHydrationStatus(uiState: MainUiState) {
     Column() {
         Text(text = "오늘 수분 섭취량 : " + uiState.currentAmountOfHydration.toString())
         Text(text = "목표 수분 섭취량 : " + uiState.goalHydrationAmount.toString())
     }
-
 }
 
 @Composable

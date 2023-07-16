@@ -1,4 +1,4 @@
-package com.example.android.waterwise.ui.screen.home
+package com.example.android.waterwise.ui.screen.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,12 +16,12 @@ import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class MainViewModel @Inject constructor(
     private val dailyHydrationRecordRepository: DailyHydrationRecordRepositoryImpl,
     private val userPreferencesRepository: UserPreferencesRepositoryImpl
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(HomeUiState(bottomSheetVisibility = false))
-    val uiState: StateFlow<HomeUiState> = _uiState
+    private val _uiState = MutableStateFlow(MainUiState(bottomSheetVisibility = false))
+    val uiState: StateFlow<MainUiState> = _uiState
 
     init {
         fetchGoalHydrationAmount()
@@ -80,7 +80,7 @@ class HomeViewModel @Inject constructor(
     }
 }
 
-data class HomeUiState(
+data class MainUiState(
     val bottomSheetVisibility: Boolean,
     val currentAmountOfHydration: Int = 0,
     val goalHydrationAmount: Int = 0,
