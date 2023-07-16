@@ -3,6 +3,8 @@ package com.example.android.waterwise.ui.screen.profile
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -15,8 +17,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.android.waterwise.model.Sex
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel()) {
+fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), popBackStack: () -> Unit) {
     val uiState = viewModel.uiState.collectAsState().value
 
     val openInputSexDialog = remember { mutableStateOf(false) }
@@ -24,80 +27,94 @@ fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel()) {
     val openInputHeight = remember { mutableStateOf(false) }
     val openInputWeight = remember { mutableStateOf(false) }
 
-    Column {
-        ListItem(modifier = Modifier.clickable { openInputGoalHydrationAmount.value = true },
-            headlineText = { Text(text = "목표 수분 섭취량") },
-            trailingContent = {
-                Text(
-                    text = uiState.goalHydrationAmount.toString()
-                )
-            })
-        Divider()
-        ListItem(modifier = Modifier.clickable { openInputSexDialog.value = true },
-            headlineText = { Text(text = "성별") },
-            trailingContent = {
-                Text(text = uiState.sex.let {
-                    when (it) {
-                        Sex.Man -> "남자"
-                        Sex.Woman -> "여자"
-                        else -> ""
-                    }
+    Scaffold(topBar = {
+        MediumTopAppBar(title = {
+            Text(text = "프로필", maxLines = 1)
+        }, navigationIcon = {
+            IconButton(onClick = { popBackStack() }) {
+                Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "설정 화면으로 이동")
+            }
+        })
+    }) {
+        Column(
+            modifier = Modifier.padding(it)
+        ) {
+            ListItem(modifier = Modifier.clickable { openInputGoalHydrationAmount.value = true },
+                headlineText = { Text(text = "목표 수분 섭취량") },
+                trailingContent = {
+                    Text(
+                        text = uiState.goalHydrationAmount.toString()
+                    )
                 })
-            })
-        Divider()
-        ListItem(modifier = Modifier.clickable { openInputHeight.value = true },
-            headlineText = { Text(text = "키") },
-            trailingContent = {
-                Text(
-                    text = uiState.height.toString()
-                )
-            })
-        Divider()
-        ListItem(modifier = Modifier.clickable { openInputWeight.value = true },
-            headlineText = { Text(text = "몸무게") },
-            trailingContent = {
-                Text(
-                    text = uiState.weight.toString()
-                )
-            })
-        Divider()
+            Divider()
+            ListItem(modifier = Modifier.clickable { openInputSexDialog.value = true },
+                headlineText = { Text(text = "성별") },
+                trailingContent = {
+                    Text(text = uiState.sex.let {
+                        when (it) {
+                            Sex.Man -> "남자"
+                            Sex.Woman -> "여자"
+                            else -> ""
+                        }
+                    })
+                })
+            Divider()
+            ListItem(modifier = Modifier.clickable { openInputHeight.value = true },
+                headlineText = { Text(text = "키") },
+                trailingContent = {
+                    Text(
+                        text = uiState.height.toString()
+                    )
+                })
+            Divider()
+            ListItem(modifier = Modifier.clickable { openInputWeight.value = true },
+                headlineText = { Text(text = "몸무게") },
+                trailingContent = {
+                    Text(
+                        text = uiState.weight.toString()
+                    )
+                })
+            Divider()
 
-        if (openInputSexDialog.value) {
-            InputSexDialog(sex = uiState.sex,
-                onDismissRequest = { openInputSexDialog.value = false },
-                onConfirm = {
-                    openInputSexDialog.value = false
-                    viewModel.setUserSex(it)
-                })
-        }
+            if (openInputSexDialog.value) {
+                InputSexDialog(sex = uiState.sex,
+                    onDismissRequest = { openInputSexDialog.value = false },
+                    onConfirm = {
+                        openInputSexDialog.value = false
+                        viewModel.setUserSex(it)
+                    })
+            }
 
-        if (openInputGoalHydrationAmount.value) {
-            InputGoalHydrationAmountDialog(goalHydrationAmount = uiState.goalHydrationAmount,
-                onDismissRequest = { openInputGoalHydrationAmount.value = false },
-                onConfirm = {
-                    openInputGoalHydrationAmount.value = false
-                    viewModel.setGoalHydrationAmount(it)
-                })
-        }
+            if (openInputGoalHydrationAmount.value) {
+                InputGoalHydrationAmountDialog(goalHydrationAmount = uiState.goalHydrationAmount,
+                    onDismissRequest = { openInputGoalHydrationAmount.value = false },
+                    onConfirm = {
+                        openInputGoalHydrationAmount.value = false
+                        viewModel.setGoalHydrationAmount(it)
+                    })
+            }
 
-        if (openInputWeight.value) {
-            InputWeightDailog(weight = uiState.weight,
-                onDismissRequest = { openInputWeight.value = false },
-                onConfirm = {
-                    openInputWeight.value = false
-                    viewModel.setUserWeight(it)
-                })
-        }
+            if (openInputWeight.value) {
+                InputWeightDailog(weight = uiState.weight,
+                    onDismissRequest = { openInputWeight.value = false },
+                    onConfirm = {
+                        openInputWeight.value = false
+                        viewModel.setUserWeight(it)
+                    })
+            }
 
-        if (openInputHeight.value) {
-            InputHeightDialog(height = uiState.height,
-                onDismissRequest = { openInputHeight.value = false },
-                onConfirm = {
-                    openInputHeight.value = false
-                    viewModel.setUserHeight(it)
-                })
+            if (openInputHeight.value) {
+                InputHeightDialog(height = uiState.height,
+                    onDismissRequest = { openInputHeight.value = false },
+                    onConfirm = {
+                        openInputHeight.value = false
+                        viewModel.setUserHeight(it)
+                    })
+            }
         }
     }
+
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

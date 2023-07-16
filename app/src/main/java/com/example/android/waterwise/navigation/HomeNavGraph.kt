@@ -17,6 +17,6 @@ fun HomeNavGraph(navController: NavHostController) {
                 navController.navigate("profile")
             })
         }
-        composable("profile") { ProfileScreen() }
+        composable("profile") { ProfileScreen(popBackStack = { navController.popBackStack() }) }
     }
 }
