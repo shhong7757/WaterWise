@@ -1,11 +1,12 @@
 package com.example.android.waterwise.ui.screen.main
 
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.android.waterwise.data.BeverageRepository
 import com.example.android.waterwise.data.DailyHydrationRecord
 import com.example.android.waterwise.data.datastore.UserPreferencesRepositoryImpl
 import com.example.android.waterwise.data.room.DailyHydrationRecordRepositoryImpl
-import com.example.android.waterwise.model.Beverage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,15 +18,63 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
+    private val beverageRepository: BeverageRepository,
     private val dailyHydrationRecordRepository: DailyHydrationRecordRepositoryImpl,
     private val userPreferencesRepository: UserPreferencesRepositoryImpl
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(MainUiState(bottomSheetVisibility = false))
+    private val _uiState = MutableStateFlow(
+        MainUiState(
+            beverageOptions = listOf(),
+            bottomSheetVisibility = false,
+            hydratePresetOptions = listOf(),
+        )
+    )
     val uiState: StateFlow<MainUiState> = _uiState
 
     init {
         fetchGoalHydrationAmount()
+        fetchBeverageList()
+        fetchBeveragePresetList()
         observeDailyHydrationRecord()
+    }
+
+    private fun fetchBeverageList() {
+        viewModelScope.launch {
+            beverageRepository.getAllBeverageStream().collect { beverages ->
+                _uiState.value = _uiState.value.copy(beverageOptions = beverages.map { beverage ->
+                    BeverageOption(
+                        beverageId = beverage.id,
+                        color = Color(beverage.symbolColor),
+                        label = beverage.value
+                    )
+                })
+            }
+        }
+    }
+
+    private fun fetchBeveragePresetList() {
+        viewModelScope.launch {
+            beverageRepository.getAllBeverageWithHydratePresetsStream()
+                .collect { beverageWithHydratePresets ->
+                    println(beverageWithHydratePresets)
+                    beverageWithHydratePresets.map { beverageWithHydratePreset ->
+                        val beverage = beverageWithHydratePreset.beverage
+                        beverageWithHydratePreset.hydratePresets.map { hydratePreset ->
+                            HydratePresetOption(
+                                beverageOption = BeverageOption(
+                                    beverageId = beverage.id,
+                                    color = Color(beverage.symbolColor),
+                                    label = beverage.value
+                                ), hydrationAmount = hydratePreset.hydrationAmount
+                            )
+                        }
+                    }.fold(listOf<HydratePresetOption>()) { acc, curr ->
+                        acc.plus(curr)
+                    }.let {
+                        _uiState.value = _uiState.value.copy(hydratePresetOptions = it)
+                    }
+                }
+        }
     }
 
     private fun fetchGoalHydrationAmount() {
@@ -53,13 +102,13 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun insertDailyHydrationRecord(amount: Int, beverage: Beverage) {
+    fun insertDailyHydrationRecord(amount: Int, beverageOption: BeverageOption) {
         viewModelScope.launch {
             val today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
             dailyHydrationRecordRepository.insertDailyHydrationRecord(
                 DailyHydrationRecord(
                     amount = amount,
-                    beverage = beverage,
+                    beverageId = beverageOption.beverageId,
                     date = today,
                 )
             )
@@ -82,7 +131,20 @@ class MainViewModel @Inject constructor(
 }
 
 data class MainUiState(
+    val beverageOptions: List<BeverageOption>,
     val bottomSheetVisibility: Boolean,
     val currentAmountOfHydration: Int = 0,
     val goalHydrationAmount: Int = 0,
+    val hydratePresetOptions: List<HydratePresetOption>,
+)
+
+data class BeverageOption(
+    val beverageId: Int,
+    val color: Color,
+    val label: String,
+)
+
+data class HydratePresetOption(
+    val beverageOption: BeverageOption,
+    val hydrationAmount: Int,
 )

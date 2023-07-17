@@ -1,8 +1,9 @@
 package com.example.android.waterwise.di
 
-import com.example.android.waterwise.data.DailyHydrationRecordDao
-import com.example.android.waterwise.data.DailyHydrationRecordRepository
+import com.example.android.waterwise.data.*
+import com.example.android.waterwise.data.room.BeverageRepositoryImpl
 import com.example.android.waterwise.data.room.DailyHydrationRecordRepositoryImpl
+import com.example.android.waterwise.data.room.HydratePresetRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,5 +19,17 @@ class RepositoryModule {
         dailyHydrationRecordDao: DailyHydrationRecordDao
     ): DailyHydrationRecordRepository {
         return DailyHydrationRecordRepositoryImpl(dailyHydrationRecordDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBeverageRepository(beverageDao: BeverageDao): BeverageRepository {
+        return BeverageRepositoryImpl(beverageDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideHydratePresetRepository(hydratePresetDao: HydratePresetDao): HydratePresetRepository {
+        return HydratePresetRepositoryImpl(hydratePresetDao)
     }
 }

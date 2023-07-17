@@ -5,7 +5,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.android.waterwise.ui.components.HydrateForm
 import java.time.LocalDate
@@ -26,12 +25,11 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
             }
         })
         if (uiState.bottomSheetVisibility) {
-            HydrateForm(
-                context = LocalContext.current,
-                onHydrateRequest = { amount, beverage ->
-                    viewModel.insertDailyHydrationRecord(amount, beverage)
-                }
-            )
+            HydrateForm(beverageOptions = uiState.beverageOptions,
+                hydratePresetOptions = uiState.hydratePresetOptions,
+                onHydrateRequest = { hydrateAmount, beverageOption ->
+                    viewModel.insertDailyHydrationRecord(hydrateAmount, beverageOption)
+                })
         }
     }
 }

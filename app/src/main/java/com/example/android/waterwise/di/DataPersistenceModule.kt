@@ -7,12 +7,12 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.android.datastore.SerializedUserProfile
 import com.example.android.waterwise.DATA_STORE_FILE_NAME
 import com.example.android.waterwise.USER_PREFERENCES_NAME
-import com.example.android.waterwise.data.DailyHydrationRecordDao
-import com.example.android.waterwise.data.UserProfileSerializer
-import com.example.android.waterwise.data.WaterWiseDatabase
+import com.example.android.waterwise.data.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,11 +26,9 @@ class DataPersistenceModule {
     @Provides
     @Singleton
     fun providePreferencesDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
-        return PreferenceDataStoreFactory.create(
-            produceFile = {
-                context.preferencesDataStoreFile(USER_PREFERENCES_NAME)
-            }
-        )
+        return PreferenceDataStoreFactory.create(produceFile = {
+            context.preferencesDataStoreFile(USER_PREFERENCES_NAME)
+        })
     }
 
     @Provides
@@ -39,8 +37,7 @@ class DataPersistenceModule {
         return DataStoreFactory.create(
             produceFile = {
                 context.preferencesDataStoreFile(DATA_STORE_FILE_NAME)
-            },
-            serializer = UserProfileSerializer
+            }, serializer = UserProfileSerializer
         )
     }
 
@@ -48,14 +45,30 @@ class DataPersistenceModule {
     @Singleton
     fun provideDatabase(@ApplicationContext contenxt: Context): WaterWiseDatabase {
         return Room.databaseBuilder(
-            contenxt,
-            WaterWiseDatabase::class.java,
-            "warter_wise"
-        ).build()
+            contenxt, WaterWiseDatabase::class.java, "water_wise"
+        ).addCallback(object : RoomDatabase.Callback() {
+            override fun onCreate(db: SupportSQLiteDatabase) {
+                super.onCreate(db)
+                db.execSQL("insert into beverage (value, symbolColor) values ('water', '0x03DAC6');")
+                db.execSQL("insert into beverage (value, symbolColor) values ('coffee', '0x000000');")
+                db.execSQL("insert into hydrate_preset (beverageId, hydrationAmount ) values(1, 200) ")
+                db.execSQL("insert into hydrate_preset (beverageId, hydrationAmount ) values(2, 350) ")
+            }
+        }).build()
     }
 
     @Provides
     fun provideDailyHydrationRecordDao(database: WaterWiseDatabase): DailyHydrationRecordDao {
         return database.dailyHydrationRecordDao()
+    }
+
+    @Provides
+    fun provideBeverageDao(database: WaterWiseDatabase): BeverageDao {
+        return database.beverageDao()
+    }
+
+    @Provides
+    fun provideHydratePresetDao(database: WaterWiseDatabase): HydratePresetDao {
+        return database.hydratePresetDao()
     }
 }

@@ -1,15 +1,12 @@
 package com.example.android.waterwise.ui.components
 
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -22,68 +19,99 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.android.waterwise.R
-import com.example.android.waterwise.model.Beverage
+import com.example.android.waterwise.ui.screen.main.BeverageOption
+import com.example.android.waterwise.ui.screen.main.HydratePresetOption
 
 @Composable
 fun HydrateForm(
-    context: Context,
-    onHydrateRequest: (amount: Int, beverage: Beverage) -> Unit
+    beverageOptions: List<BeverageOption>,
+    hydratePresetOptions: List<HydratePresetOption>,
+    onHydrateRequest: (hydrateAmount: Int, beverageOption: BeverageOption) -> Unit
 ) {
-    val amount = remember { mutableStateOf(0) }
-    val selectedBeverage = remember { mutableStateOf(Beverage.Water) }
-
-    val beverages = Beverage.values()
+    val hydrateAmount = remember { mutableStateOf(0) }
+    val selectedBeverageOption = remember { mutableStateOf<BeverageOption?>(null) }
 
     Column {
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "프리셋")
+        Spacer(modifier = Modifier.height(16.dp))
         Row() {
-            beverages.map { beverage ->
-                BeverageItem(
-                    beverage,
-                    context,
-                    selected = (selectedBeverage.value == beverage),
-                    onSelectBeverage = { selectedBeverage.value = it })
+            hydratePresetOptions.map { hydratePresetOption ->
+                HydratePresetOptionListItem(hydratePresetOption, onSelectHydratePreset = {
+                    hydrateAmount.value = it.hydrationAmount
+                    selectedBeverageOption.value = it.beverageOption
+                })
             }
         }
+        Divider()
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "음료")
+        Spacer(modifier = Modifier.height(16.dp))
+        Row() {
+            beverageOptions.map { beverageOption ->
+                BeverageOptionListItem(beverageOption,
+                    selected = (selectedBeverageOption.value == beverageOption),
+                    onSelectBeverageOption = { selectedBeverageOption.value = beverageOption })
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
         TextField(
-            value = amount.value.toString(),
-            onValueChange = {
-                if (it == "") amount.value = 0
-                else if (it.toIntOrNull() != null) amount.value = it.toInt()
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+            value = hydrateAmount.value.toString(), onValueChange = {
+                if (it == "") hydrateAmount.value = 0
+                else if (it.toIntOrNull() != null) hydrateAmount.value = it.toInt()
+            }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
         )
+        Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = {
-            onHydrateRequest(amount.value, selectedBeverage.value)
+            onHydrateRequest(hydrateAmount.value, selectedBeverageOption.value!!)
 
-            amount.value = 0
-            selectedBeverage.value = Beverage.Water
-        }, enabled = amount.value != 0) {
+            hydrateAmount.value = 0
+            selectedBeverageOption.value = null
+        }, enabled = hydrateAmount.value != 0 && selectedBeverageOption.value != null) {
             Text(
-                text = "${selectedBeverage.value.getLabel(context)} " +
-                        stringResource(id = R.string.hydrate)
+                text = stringResource(id = R.string.hydrate)
             )
         }
     }
 }
 
-
 @Composable
-fun BeverageItem(
-    beverage: Beverage,
-    context: Context,
+fun BeverageOptionListItem(
+    beverageOption: BeverageOption,
     selected: Boolean,
-    onSelectBeverage: (beverage: Beverage) -> Unit
+    onSelectBeverageOption: (beverageOption: BeverageOption) -> Unit
 ) {
-    Column(modifier = Modifier.clickable { onSelectBeverage(beverage) }) {
+    println("#######")
+    println(beverageOption.color)
+    Column(modifier = Modifier.clickable { onSelectBeverageOption(beverageOption) }) {
         Box(
             modifier = Modifier
                 .size(24.dp)
                 .clip(CircleShape)
-                .background(beverage.getColor())
+                .background(beverageOption.color)
         )
         Text(
-            text = beverage.getLabel(context),
+            text = beverageOption.label,
             fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
         )
+    }
+}
+
+@Composable
+fun HydratePresetOptionListItem(
+    hydratePresetOption: HydratePresetOption,
+    onSelectHydratePreset: (hydratePresetOption: HydratePresetOption) -> Unit
+) {
+    Column(modifier = Modifier.clickable { onSelectHydratePreset(hydratePresetOption) }) {
+        Box(
+            modifier = Modifier
+                .size(24.dp)
+                .clip(CircleShape)
+                .background(hydratePresetOption.beverageOption.color)
+        )
+        Text(
+            text = hydratePresetOption.beverageOption.label,
+        )
+        Text(text = hydratePresetOption.hydrationAmount.toString())
     }
 }
