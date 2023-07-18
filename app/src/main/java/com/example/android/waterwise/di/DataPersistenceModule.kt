@@ -49,10 +49,10 @@ class DataPersistenceModule {
         ).addCallback(object : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
-                db.execSQL("insert into beverage (value, symbolColor) values ('water', '0x03DAC6');")
-                db.execSQL("insert into beverage (value, symbolColor) values ('coffee', '0x000000');")
-                db.execSQL("insert into hydrate_preset (beverageId, hydrationAmount ) values(1, 200) ")
-                db.execSQL("insert into hydrate_preset (beverageId, hydrationAmount ) values(2, 350) ")
+                db.execSQL("insert into beverage (value, color) values ('water', '0x03DAC6');")
+                db.execSQL("insert into beverage (value, color) values ('coffee', '0x000000');")
+                db.execSQL("insert into hydrate_preset (beverage_id, amount, nickname ) values(1, 200, 'water') ")
+                db.execSQL("insert into hydrate_preset (beverage_id, amount, nickname ) values(2, 350, 'coffee') ")
             }
         }).build()
     }

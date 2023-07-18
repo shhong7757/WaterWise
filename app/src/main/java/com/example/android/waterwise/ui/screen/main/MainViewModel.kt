@@ -44,7 +44,7 @@ class MainViewModel @Inject constructor(
                 _uiState.value = _uiState.value.copy(beverageOptions = beverages.map { beverage ->
                     BeverageOption(
                         beverageId = beverage.id,
-                        color = Color(beverage.symbolColor),
+                        color = Color(beverage.color),
                         label = beverage.value
                     )
                 })
@@ -63,9 +63,9 @@ class MainViewModel @Inject constructor(
                             HydratePresetOption(
                                 beverageOption = BeverageOption(
                                     beverageId = beverage.id,
-                                    color = Color(beverage.symbolColor),
-                                    label = beverage.value
-                                ), hydrationAmount = hydratePreset.hydrationAmount
+                                    color = Color(beverage.color),
+                                    label = hydratePreset.nickname
+                                ), hydrationAmount = hydratePreset.amount
                             )
                         }
                     }.fold(listOf<HydratePresetOption>()) { acc, curr ->
