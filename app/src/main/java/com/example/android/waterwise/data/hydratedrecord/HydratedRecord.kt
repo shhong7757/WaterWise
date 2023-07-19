@@ -13,7 +13,7 @@ data class HydratedRecord(
 
 data class HydratedRecordAndBeverage(
     @Embedded val hydratedRecord: HydratedRecord, @Relation(
-        parentColumn = "hydrated_record_id",
+        parentColumn = "beverage_id",
         entityColumn = "beverage_id",
     ) val beverage: Beverage
 )
