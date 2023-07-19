@@ -1,4 +1,4 @@
-package com.example.android.waterwise.ui.screen.home
+package com.example.android.waterwise.ui.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -15,14 +15,11 @@ import com.example.android.waterwise.navigation.HomeNavGraph
 
 @Composable
 fun HomeScreen(navController: NavHostController = rememberNavController()) {
-    Scaffold(
-        bottomBar = {
-            BottomNavigation(navController = navController)
-        }
-    ) { padding ->
+    Scaffold(bottomBar = {
+        BottomNavigation(navController = navController)
+    }) { padding ->
         Column(
-            modifier = Modifier
-                .padding(padding)
+            modifier = Modifier.padding(padding)
         ) {
             HomeNavGraph(navController = navController)
         }
@@ -32,7 +29,7 @@ fun HomeScreen(navController: NavHostController = rememberNavController()) {
 @Composable
 fun BottomNavigation(navController: NavController) {
     var selectedItem by remember { mutableStateOf(0) }
-    val screens = listOf("main", "setting")
+    val screens = listOf("main", "setting", "record")
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -42,8 +39,7 @@ fun BottomNavigation(navController: NavController) {
     if (navigationBarDestination) {
         NavigationBar {
             screens.forEachIndexed { index, item ->
-                NavigationBarItem(
-                    icon = { Icon(Icons.Filled.Favorite, contentDescription = item) },
+                NavigationBarItem(icon = { Icon(Icons.Filled.Favorite, contentDescription = item) },
                     label = { Text(item) },
                     selected = selectedItem == index,
                     onClick = {
@@ -51,9 +47,9 @@ fun BottomNavigation(navController: NavController) {
                         when (item) {
                             "main" -> navController.navigate("main")
                             "setting" -> navController.navigate("setting")
+                            "record" -> navController.navigate("record")
                         }
-                    }
-                )
+                    })
             }
         }
     }

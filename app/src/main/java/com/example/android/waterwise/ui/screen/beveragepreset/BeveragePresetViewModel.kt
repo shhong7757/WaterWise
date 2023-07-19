@@ -22,10 +22,10 @@ class BeveragePresetViewModel @Inject constructor(
     val uiState: StateFlow<BeveragePresetUiState> = _uiState
 
     init {
-        fetchHydratePresetsByBeverageId(savedStateHandle.get<Int>("id"))
+        fetchHydratePresetsByBeverageId(savedStateHandle.get<Long>("id"))
     }
 
-    private fun fetchHydratePresetsByBeverageId(id: Int?) {
+    private fun fetchHydratePresetsByBeverageId(id: Long?) {
         viewModelScope.launch {
             if (id != null) {
                 beverageRepository.getBeverageWithHydratePresetsById(id).collect {

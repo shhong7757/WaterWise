@@ -22,6 +22,6 @@ interface BeverageDao {
     fun getAllBeverageWithHydratePresets(): Flow<List<BeverageWithHydratePresets>>
 
     @Transaction
-    @Query("SELECT * FROM beverage WHERE id = :id")
-    fun getBeverageWithHydratePresetsById(id: Int): Flow<BeverageWithHydratePresets>
+    @Query("SELECT * FROM beverage WHERE beverage_id = :id")
+    fun getBeverageWithHydratePresetsById(id: Long): Flow<BeverageWithHydratePresets>
 }

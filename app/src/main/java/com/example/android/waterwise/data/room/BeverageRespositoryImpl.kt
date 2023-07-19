@@ -21,6 +21,6 @@ class BeverageRepositoryImpl @Inject constructor(
     override fun getAllBeverageWithHydratePresetsStream(): Flow<List<BeverageWithHydratePresets>> =
         beverageDao.getAllBeverageWithHydratePresets()
 
-    override fun getBeverageWithHydratePresetsById(id: Int): Flow<BeverageWithHydratePresets> =
+    override fun getBeverageWithHydratePresetsById(id: Long): Flow<BeverageWithHydratePresets> =
         beverageDao.getBeverageWithHydratePresetsById(id)
 }

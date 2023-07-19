@@ -8,5 +8,5 @@ interface BeverageRepository {
     suspend fun deleteBeverage(beverage: Beverage)
     fun getAllBeverageStream(): Flow<List<Beverage>>
     fun getAllBeverageWithHydratePresetsStream(): Flow<List<BeverageWithHydratePresets>>
-    fun getBeverageWithHydratePresetsById(id: Int): Flow<BeverageWithHydratePresets>
+    fun getBeverageWithHydratePresetsById(id: Long): Flow<BeverageWithHydratePresets>
 }

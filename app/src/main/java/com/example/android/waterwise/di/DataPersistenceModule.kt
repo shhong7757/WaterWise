@@ -58,11 +58,6 @@ class DataPersistenceModule {
     }
 
     @Provides
-    fun provideDailyHydrationRecordDao(database: WaterWiseDatabase): DailyHydrationRecordDao {
-        return database.dailyHydrationRecordDao()
-    }
-
-    @Provides
     fun provideBeverageDao(database: WaterWiseDatabase): BeverageDao {
         return database.beverageDao()
     }
@@ -70,5 +65,10 @@ class DataPersistenceModule {
     @Provides
     fun provideHydratePresetDao(database: WaterWiseDatabase): HydratePresetDao {
         return database.hydratePresetDao()
+    }
+
+    @Provides
+    fun provideHydratedRecordDto(database: WaterWiseDatabase): HydratedRecordDao {
+        return database.hydratedRecordDao()
     }
 }

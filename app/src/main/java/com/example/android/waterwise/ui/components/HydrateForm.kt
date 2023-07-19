@@ -81,8 +81,6 @@ fun BeverageOptionListItem(
     selected: Boolean,
     onSelectBeverageOption: (beverageOption: BeverageOption) -> Unit
 ) {
-    println("#######")
-    println(beverageOption.color)
     Column(modifier = Modifier.clickable { onSelectBeverageOption(beverageOption) }) {
         Box(
             modifier = Modifier

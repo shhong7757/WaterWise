@@ -10,6 +10,7 @@ import com.example.android.waterwise.ui.screen.beveragepreset.BeveragePresetScre
 import com.example.android.waterwise.ui.screen.beveragepresetmanagement.BeveragePresetManagementScreen
 import com.example.android.waterwise.ui.screen.main.MainScreen
 import com.example.android.waterwise.ui.screen.profile.ProfileScreen
+import com.example.android.waterwise.ui.screen.record.RecordScreen
 import com.example.android.waterwise.ui.screen.setting.SettingScreen
 
 @Composable
@@ -20,13 +21,13 @@ fun HomeNavGraph(navController: NavHostController) {
             SettingScreen(navigateToProfile = { navController.navigate("profile") },
                 navigateToBeveragePresetManagement = { navController.navigate("beveragePresetManagement") })
         }
+        composable("record") { RecordScreen() }
 
         composable("profile") { ProfileScreen(popBackStack = { navController.popBackStack() }) }
 
         composable(
-            "beveragePreset/{id}",
-            arguments = listOf(navArgument("id") { type = NavType.IntType })
-        ) { backStackEntry ->
+            "beveragePreset/{id}", arguments = listOf(navArgument("id") { type = NavType.IntType })
+        ) {
             BeveragePresetScreen(popBackStack = { navController.popBackStack() })
         }
         composable("beveragePresetManagement") {

@@ -16,7 +16,7 @@ import com.example.android.waterwise.ui.screen.profile.*
 @Composable
 fun BeveragePresetManagementScreen(
     viewModel: BeveragePresetManagementViewModel = hiltViewModel(),
-    navigateToBeveragePreset: (beverageId: Int) -> Unit,
+    navigateToBeveragePreset: (beverageId: Long) -> Unit,
     popBackStack: () -> Unit
 ) {
     val uiState = viewModel.uiState.collectAsState().value
@@ -42,7 +42,7 @@ fun BeveragePresetManagementScreen(
 }
 
 @Composable
-fun BeverageListItem(beverage: Beverage, navigateToBeveragePreset: (beverageId: Int) -> Unit) {
+fun BeverageListItem(beverage: Beverage, navigateToBeveragePreset: (beverageId: Long) -> Unit) {
     ListItem(modifier = Modifier.clickable { navigateToBeveragePreset(beverage.id) },
         headlineText = { Text(text = beverage.value) })
 }

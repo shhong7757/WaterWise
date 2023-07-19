@@ -9,9 +9,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.android.waterwise.data.datastore.UserPreferencesRepositoryImpl
 import com.example.android.waterwise.ui.WaterWiseAppState
 import com.example.android.waterwise.ui.rememberWaterWiseAppState
-import com.example.android.waterwise.ui.screen.home.HomeScreen
+import com.example.android.waterwise.ui.screen.HomeScreen
 import com.example.android.waterwise.ui.screen.onboarding.OnBoardingScreen
-import com.example.android.waterwise.ui.screen.profile.ProfileScreen
 
 @Composable
 fun WaterWiseApp(

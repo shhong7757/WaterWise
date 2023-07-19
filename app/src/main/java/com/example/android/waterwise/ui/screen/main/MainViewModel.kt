@@ -4,9 +4,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.waterwise.data.BeverageRepository
-import com.example.android.waterwise.data.DailyHydrationRecord
+import com.example.android.waterwise.data.HydratedRecord
 import com.example.android.waterwise.data.datastore.UserPreferencesRepositoryImpl
-import com.example.android.waterwise.data.room.DailyHydrationRecordRepositoryImpl
+import com.example.android.waterwise.data.room.HydratedRecordRepositoryImpl
+import com.example.android.waterwise.util.sumOfHydratedAmount
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val beverageRepository: BeverageRepository,
-    private val dailyHydrationRecordRepository: DailyHydrationRecordRepositoryImpl,
+    private val hydratedRecordRepository: HydratedRecordRepositoryImpl,
     private val userPreferencesRepository: UserPreferencesRepositoryImpl
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(
@@ -35,7 +36,7 @@ class MainViewModel @Inject constructor(
         fetchGoalHydrationAmount()
         fetchBeverageList()
         fetchBeveragePresetList()
-        observeDailyHydrationRecord()
+        fetchHydratedRecord()
     }
 
     private fun fetchBeverageList() {
@@ -56,7 +57,6 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             beverageRepository.getAllBeverageWithHydratePresetsStream()
                 .collect { beverageWithHydratePresets ->
-                    println(beverageWithHydratePresets)
                     beverageWithHydratePresets.map { beverageWithHydratePreset ->
                         val beverage = beverageWithHydratePreset.beverage
                         beverageWithHydratePreset.hydratePresets.map { hydratePreset ->
@@ -85,16 +85,13 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun observeDailyHydrationRecord() {
+    private fun fetchHydratedRecord() {
         viewModelScope.launch {
             val date: String = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
-            dailyHydrationRecordRepository.getAllHydrationAmountStream(
+            hydratedRecordRepository.getAllHydratedRecordByDate(
                 date
             ).map {
-                it.map { dailyHydrationRecord -> dailyHydrationRecord.amount }
-                    .fold(0) { totalAmountOfHydration, hydrationAmount ->
-                        totalAmountOfHydration + hydrationAmount
-                    }
+                sumOfHydratedAmount(it)
             }.collect { currentAmountOfHydration ->
                 _uiState.value =
                     _uiState.value.copy(currentAmountOfHydration = currentAmountOfHydration)
@@ -105,8 +102,8 @@ class MainViewModel @Inject constructor(
     fun insertDailyHydrationRecord(amount: Int, beverageOption: BeverageOption) {
         viewModelScope.launch {
             val today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
-            dailyHydrationRecordRepository.insertDailyHydrationRecord(
-                DailyHydrationRecord(
+            hydratedRecordRepository.insertHydratedRecord(
+                HydratedRecord(
                     amount = amount,
                     beverageId = beverageOption.beverageId,
                     date = today,
@@ -139,7 +136,7 @@ data class MainUiState(
 )
 
 data class BeverageOption(
-    val beverageId: Int,
+    val beverageId: Long,
     val color: Color,
     val label: String,
 )
