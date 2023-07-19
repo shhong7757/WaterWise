@@ -1,5 +1,6 @@
-package com.example.android.waterwise.data
+package com.example.android.waterwise.data.preferences
 
+import com.example.android.waterwise.data.profile.UserProfile
 import com.example.android.waterwise.model.Sex
 import kotlinx.coroutines.flow.Flow
 

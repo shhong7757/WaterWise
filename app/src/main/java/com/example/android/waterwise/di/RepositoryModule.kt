@@ -1,9 +1,15 @@
 package com.example.android.waterwise.di
 
 import com.example.android.waterwise.data.*
+import com.example.android.waterwise.data.beverage.BeverageDao
+import com.example.android.waterwise.data.beverage.BeverageRepository
+import com.example.android.waterwise.data.hydratedrecord.HydratedRecordDao
+import com.example.android.waterwise.data.hydratedrecord.HydratedRecordRepository
+import com.example.android.waterwise.data.hydratepreset.HydratePresetDao
+import com.example.android.waterwise.data.hydratepreset.HydratePresetRepository
 import com.example.android.waterwise.data.room.BeverageRepositoryImpl
-import com.example.android.waterwise.data.room.HydratePresetRepositoryImpl
-import com.example.android.waterwise.data.room.HydratedRecordRepositoryImpl
+import com.example.android.waterwise.data.hydratepreset.impl.RoomHydratePresetRepository
+import com.example.android.waterwise.data.hydratedrecord.impl.RoomHydratedRecordRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,7 +28,7 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideHydratePresetRepository(hydratePresetDao: HydratePresetDao): HydratePresetRepository {
-        return HydratePresetRepositoryImpl(hydratePresetDao)
+        return RoomHydratePresetRepository(hydratePresetDao)
     }
 
     @Provides
@@ -30,6 +36,6 @@ class RepositoryModule {
     fun provideHydratedRecordRepository(
         hydratedRecordDao: HydratedRecordDao
     ): HydratedRecordRepository {
-        return HydratedRecordRepositoryImpl(hydratedRecordDao)
+        return RoomHydratedRecordRepository(hydratedRecordDao)
     }
 }

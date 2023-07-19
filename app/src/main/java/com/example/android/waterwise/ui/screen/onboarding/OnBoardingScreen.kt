@@ -15,7 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.android.waterwise.data.UserProfile
+import com.example.android.waterwise.data.profile.UserProfile
 import com.example.android.waterwise.ui.screen.onboarding.page.CustomizeUserProfilePage
 import com.example.android.waterwise.ui.screen.onboarding.page.WelcomePage
 import kotlinx.coroutines.launch

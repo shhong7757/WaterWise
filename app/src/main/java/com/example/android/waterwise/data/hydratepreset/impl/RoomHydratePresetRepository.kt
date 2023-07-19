@@ -1,12 +1,12 @@
-package com.example.android.waterwise.data.room
+package com.example.android.waterwise.data.hydratepreset.impl
 
-import com.example.android.waterwise.data.HydratePreset
-import com.example.android.waterwise.data.HydratePresetDao
-import com.example.android.waterwise.data.HydratePresetRepository
+import com.example.android.waterwise.data.hydratepreset.HydratePreset
+import com.example.android.waterwise.data.hydratepreset.HydratePresetDao
+import com.example.android.waterwise.data.hydratepreset.HydratePresetRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class HydratePresetRepositoryImpl @Inject constructor(
+class RoomHydratePresetRepository @Inject constructor(
     private val hydratePresetDao: HydratePresetDao
 ) : HydratePresetRepository {
     override suspend fun insertHydratePreset(beveragePreset: HydratePreset) =

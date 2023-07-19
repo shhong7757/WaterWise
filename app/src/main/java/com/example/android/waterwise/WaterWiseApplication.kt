@@ -6,7 +6,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.android.datastore.SerializedUserProfile
-import com.example.android.waterwise.data.UserProfileSerializer
+import com.example.android.waterwise.data.profile.UserProfileSerializer
 import dagger.hilt.android.HiltAndroidApp
 
 const val USER_PREFERENCES_NAME = "user_preferences"

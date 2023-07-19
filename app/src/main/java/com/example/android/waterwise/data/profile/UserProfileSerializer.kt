@@ -1,4 +1,4 @@
-package com.example.android.waterwise.data
+package com.example.android.waterwise.data.profile
 
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer

@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import com.example.android.waterwise.data.datastore.UserPreferencesRepositoryImpl
+import com.example.android.waterwise.data.preferences.impl.DataStoreUserPreferencesRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.stateIn
 @Composable
 fun rememberWaterWiseAppState(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    userPreferencesRepository: UserPreferencesRepositoryImpl
+    userPreferencesRepository: DataStoreUserPreferencesRepository
 ): WaterWiseAppState {
     return remember {
         WaterWiseAppState(coroutineScope, userPreferencesRepository)
@@ -21,14 +21,10 @@ fun rememberWaterWiseAppState(
 
 @Stable
 class WaterWiseAppState(
-    coroutineScope: CoroutineScope,
-    userPreferencesRepository: UserPreferencesRepositoryImpl
+    coroutineScope: CoroutineScope, userPreferencesRepository: DataStoreUserPreferencesRepository
 ) {
     val hasShowOngoingScreenBefore =
-        userPreferencesRepository.getHasShowOngoingScreenBefore()
-            .stateIn(
-                coroutineScope,
-                SharingStarted.WhileSubscribed(),
-                initialValue = true
-            )
+        userPreferencesRepository.getHasShowOngoingScreenBefore().stateIn(
+            coroutineScope, SharingStarted.WhileSubscribed(), initialValue = true
+        )
 }

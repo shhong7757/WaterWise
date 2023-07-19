@@ -3,10 +3,10 @@ package com.example.android.waterwise.ui.screen.main
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.android.waterwise.data.BeverageRepository
-import com.example.android.waterwise.data.HydratedRecord
-import com.example.android.waterwise.data.datastore.UserPreferencesRepositoryImpl
-import com.example.android.waterwise.data.room.HydratedRecordRepositoryImpl
+import com.example.android.waterwise.data.beverage.BeverageRepository
+import com.example.android.waterwise.data.hydratedrecord.HydratedRecord
+import com.example.android.waterwise.data.hydratedrecord.impl.RoomHydratedRecordRepository
+import com.example.android.waterwise.data.preferences.impl.DataStoreUserPreferencesRepository
 import com.example.android.waterwise.util.sumOfHydratedAmount
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,8 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val beverageRepository: BeverageRepository,
-    private val hydratedRecordRepository: HydratedRecordRepositoryImpl,
-    private val userPreferencesRepository: UserPreferencesRepositoryImpl
+    private val hydratedRecordRepository: RoomHydratedRecordRepository,
+    private val userPreferencesRepository: DataStoreUserPreferencesRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(
         MainUiState(

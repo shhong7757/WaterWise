@@ -2,7 +2,7 @@ package com.example.android.waterwise.ui.screen.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.android.waterwise.data.datastore.UserPreferencesRepositoryImpl
+import com.example.android.waterwise.data.preferences.impl.DataStoreUserPreferencesRepository
 import com.example.android.waterwise.model.Sex
 import com.example.android.waterwise.ui.screen.setting.SettingUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val userPreferencesRepository: UserPreferencesRepositoryImpl
+    private val userPreferencesRepository: DataStoreUserPreferencesRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(
         SettingUiState(

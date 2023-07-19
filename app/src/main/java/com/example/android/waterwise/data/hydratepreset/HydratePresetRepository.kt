@@ -1,4 +1,4 @@
-package com.example.android.waterwise.data
+package com.example.android.waterwise.data.hydratepreset
 
 import kotlinx.coroutines.flow.Flow
 

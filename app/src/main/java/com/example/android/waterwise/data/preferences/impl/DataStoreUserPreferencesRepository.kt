@@ -1,4 +1,4 @@
-package com.example.android.waterwise.data.datastore
+package com.example.android.waterwise.data.preferences.impl
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -6,8 +6,8 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import com.example.android.datastore.SerializedUserProfile
-import com.example.android.waterwise.data.UserPreferencesRepository
-import com.example.android.waterwise.data.UserProfile
+import com.example.android.waterwise.data.preferences.UserPreferencesRepository
+import com.example.android.waterwise.data.profile.UserProfile
 import com.example.android.waterwise.model.Sex
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
 
-class UserPreferencesRepositoryImpl @Inject constructor(
+class DataStoreUserPreferencesRepository @Inject constructor(
     private val dataStore: DataStore<Preferences>,
     private val userProfileStore: DataStore<SerializedUserProfile>
 ) : UserPreferencesRepository {

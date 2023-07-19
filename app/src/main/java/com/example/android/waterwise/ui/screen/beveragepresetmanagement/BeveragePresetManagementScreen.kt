@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.android.waterwise.data.Beverage
+import com.example.android.waterwise.data.beverage.Beverage
 import com.example.android.waterwise.ui.screen.profile.*
 
 @OptIn(ExperimentalMaterial3Api::class)

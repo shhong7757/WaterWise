@@ -1,9 +1,9 @@
 package com.example.android.waterwise.data.room
 
-import com.example.android.waterwise.data.Beverage
-import com.example.android.waterwise.data.BeverageDao
-import com.example.android.waterwise.data.BeverageRepository
-import com.example.android.waterwise.data.BeverageWithHydratePresets
+import com.example.android.waterwise.data.beverage.Beverage
+import com.example.android.waterwise.data.beverage.BeverageDao
+import com.example.android.waterwise.data.beverage.BeverageRepository
+import com.example.android.waterwise.data.beverage.BeverageWithHydratePresets
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

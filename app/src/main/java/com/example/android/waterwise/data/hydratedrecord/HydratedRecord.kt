@@ -1,6 +1,7 @@
-package com.example.android.waterwise.data
+package com.example.android.waterwise.data.hydratedrecord
 
 import androidx.room.*
+import com.example.android.waterwise.data.beverage.Beverage
 
 @Entity(tableName = "hydrated_record")
 data class HydratedRecord(

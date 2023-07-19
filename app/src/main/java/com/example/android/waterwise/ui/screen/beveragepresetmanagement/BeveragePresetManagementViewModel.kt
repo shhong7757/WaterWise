@@ -2,8 +2,8 @@ package com.example.android.waterwise.ui.screen.beveragepresetmanagement
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.android.waterwise.data.Beverage
-import com.example.android.waterwise.data.BeverageRepository
+import com.example.android.waterwise.data.beverage.Beverage
+import com.example.android.waterwise.data.beverage.BeverageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

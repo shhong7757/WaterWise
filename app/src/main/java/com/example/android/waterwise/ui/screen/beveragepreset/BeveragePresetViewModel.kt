@@ -3,8 +3,8 @@ package com.example.android.waterwise.ui.screen.beveragepreset
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.android.waterwise.data.BeverageRepository
-import com.example.android.waterwise.data.HydratePreset
+import com.example.android.waterwise.data.beverage.BeverageRepository
+import com.example.android.waterwise.data.hydratepreset.HydratePreset
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -13,6 +13,10 @@ import com.example.android.datastore.SerializedUserProfile
 import com.example.android.waterwise.DATA_STORE_FILE_NAME
 import com.example.android.waterwise.USER_PREFERENCES_NAME
 import com.example.android.waterwise.data.*
+import com.example.android.waterwise.data.beverage.BeverageDao
+import com.example.android.waterwise.data.hydratedrecord.HydratedRecordDao
+import com.example.android.waterwise.data.hydratepreset.HydratePresetDao
+import com.example.android.waterwise.data.profile.UserProfileSerializer
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

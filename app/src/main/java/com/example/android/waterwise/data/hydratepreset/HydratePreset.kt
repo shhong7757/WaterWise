@@ -1,9 +1,10 @@
-package com.example.android.waterwise.data
+package com.example.android.waterwise.data.hydratepreset
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.example.android.waterwise.data.beverage.Beverage
 
 @Entity(
     tableName = "hydrate_preset", foreignKeys = [ForeignKey(
