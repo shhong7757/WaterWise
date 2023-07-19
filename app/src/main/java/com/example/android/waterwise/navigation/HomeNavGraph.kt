@@ -26,7 +26,7 @@ fun HomeNavGraph(navController: NavHostController) {
         composable("profile") { ProfileScreen(popBackStack = { navController.popBackStack() }) }
 
         composable(
-            "beveragePreset/{id}", arguments = listOf(navArgument("id") { type = NavType.IntType })
+            "beveragePreset/{id}", arguments = listOf(navArgument("id") { type = NavType.LongType })
         ) {
             BeveragePresetScreen(popBackStack = { navController.popBackStack() })
         }
