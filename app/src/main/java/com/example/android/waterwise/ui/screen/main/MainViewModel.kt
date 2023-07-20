@@ -7,6 +7,9 @@ import com.example.android.waterwise.data.beverage.BeverageRepository
 import com.example.android.waterwise.data.hydratedrecord.HydratedRecord
 import com.example.android.waterwise.data.hydratedrecord.impl.RoomHydratedRecordRepository
 import com.example.android.waterwise.data.preferences.impl.DataStoreUserPreferencesRepository
+import com.example.android.waterwise.util.convertToLocalDateTimeToDate
+import com.example.android.waterwise.util.getEndOfDay
+import com.example.android.waterwise.util.getStartOfDay
 import com.example.android.waterwise.util.sumOfHydratedAmount
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +17,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import java.time.LocalDateTime
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -87,9 +91,11 @@ class MainViewModel @Inject constructor(
 
     private fun fetchHydratedRecord() {
         viewModelScope.launch {
-            val date: String = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
+            val start = convertToLocalDateTimeToDate(getStartOfDay(LocalDate.now()))
+            val end = convertToLocalDateTimeToDate(getEndOfDay(LocalDate.now()))
+
             hydratedRecordRepository.getAllHydratedRecordByDate(
-                date
+                start, end
             ).map {
                 sumOfHydratedAmount(it)
             }.collect { currentAmountOfHydration ->
@@ -101,12 +107,12 @@ class MainViewModel @Inject constructor(
 
     fun insertDailyHydrationRecord(amount: Int, beverageOption: BeverageOption) {
         viewModelScope.launch {
-            val today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
+            val date: Date = convertToLocalDateTimeToDate(LocalDateTime.now())
             hydratedRecordRepository.insertHydratedRecord(
                 HydratedRecord(
                     amount = amount,
                     beverageId = beverageOption.beverageId,
-                    date = today,
+                    date = date,
                 )
             )
 

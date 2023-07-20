@@ -2,6 +2,7 @@ package com.example.android.waterwise.data
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.android.waterwise.data.beverage.Beverage
 import com.example.android.waterwise.data.beverage.BeverageDao
 import com.example.android.waterwise.data.hydratedrecord.HydratedRecord
@@ -14,6 +15,7 @@ import com.example.android.waterwise.data.hydratepreset.HydratePresetDao
     version = 1,
     exportSchema = false
 )
+@TypeConverters(Converters::class)
 abstract class WaterWiseDatabase : RoomDatabase() {
     abstract fun beverageDao(): BeverageDao
     abstract fun hydratedRecordDao(): HydratedRecordDao

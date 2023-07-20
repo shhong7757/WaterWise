@@ -5,6 +5,7 @@ import com.example.android.waterwise.data.hydratedrecord.HydratedRecordAndBevera
 import com.example.android.waterwise.data.hydratedrecord.HydratedRecordDao
 import com.example.android.waterwise.data.hydratedrecord.HydratedRecordRepository
 import kotlinx.coroutines.flow.Flow
+import java.util.*
 import javax.inject.Inject
 
 class RoomHydratedRecordRepository @Inject constructor(
@@ -22,9 +23,11 @@ class RoomHydratedRecordRepository @Inject constructor(
         hydratedRecordDao.delete(hydratedRecord)
 
 
-    override fun getAllHydratedRecordByDate(date: String): Flow<List<HydratedRecord>> =
-        hydratedRecordDao.getAllHydratedRecordByDate(date)
+    override fun getAllHydratedRecordByDate(start: Date, end: Date): Flow<List<HydratedRecord>> =
+        hydratedRecordDao.getAllHydratedRecordByDate(start, end)
 
-    override fun getAllHydratedRecordAndBeverageByDate(date: String): Flow<List<HydratedRecordAndBeverage>> =
-        hydratedRecordDao.getAllHydratedRecordAndBeverageByDate(date)
+    override fun getAllHydratedRecordAndBeverageByDate(
+        start: Date, end: Date
+    ): Flow<List<HydratedRecordAndBeverage>> =
+        hydratedRecordDao.getAllHydratedRecordAndBeverageByDate(start, end)
 }

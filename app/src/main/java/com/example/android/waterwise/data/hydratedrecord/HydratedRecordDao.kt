@@ -15,10 +15,12 @@ interface HydratedRecordDao {
     @Delete
     suspend fun delete(hydratedRecord: HydratedRecord)
 
-    @Query("SELECT * from hydrated_record WHERE date = :date")
-    fun getAllHydratedRecordByDate(date: String): Flow<List<HydratedRecord>>
+    @Query("SELECT * from hydrated_record WHERE date >= :start AND date <= :end")
+    fun getAllHydratedRecordByDate(start: Date, end: Date): Flow<List<HydratedRecord>>
 
     @Transaction
-    @Query("SELECT * from hydrated_record WHERE date = :date")
-    fun getAllHydratedRecordAndBeverageByDate(date: String): Flow<List<HydratedRecordAndBeverage>>
+    @Query("SELECT * from hydrated_record WHERE date >= :start AND date <= :end")
+    fun getAllHydratedRecordAndBeverageByDate(
+        start: Date, end: Date
+    ): Flow<List<HydratedRecordAndBeverage>>
 }
