@@ -91,8 +91,9 @@ class MainViewModel @Inject constructor(
 
     private fun fetchHydratedRecord() {
         viewModelScope.launch {
-            val start = convertToLocalDateTimeToDate(getStartOfDay(LocalDate.now()))
-            val end = convertToLocalDateTimeToDate(getEndOfDay(LocalDate.now()))
+            val now = LocalDateTime.now()
+            val start = convertToLocalDateTimeToDate(getStartOfDay(now))
+            val end = convertToLocalDateTimeToDate(getEndOfDay(now))
 
             hydratedRecordRepository.getAllHydratedRecordByDate(
                 start, end
@@ -107,7 +108,8 @@ class MainViewModel @Inject constructor(
 
     fun insertDailyHydrationRecord(amount: Int, beverageOption: BeverageOption) {
         viewModelScope.launch {
-            val date: Date = convertToLocalDateTimeToDate(LocalDateTime.now())
+            val now = LocalDateTime.now()
+            val date: Date = convertToLocalDateTimeToDate(now)
             hydratedRecordRepository.insertHydratedRecord(
                 HydratedRecord(
                     amount = amount,
