@@ -6,7 +6,7 @@ import java.util.*
 
 @Dao
 interface GoalDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(goal:Goal): Long
 
     @Query("SELECT * FROM goal ORDER BY goal_id DESC LIMIT 1")
