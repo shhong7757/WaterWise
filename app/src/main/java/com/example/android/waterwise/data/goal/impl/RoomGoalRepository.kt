@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
+import java.util.*
 import javax.inject.Inject
 
 class RoomGoalRepository @Inject constructor(
@@ -39,6 +40,8 @@ class RoomGoalRepository @Inject constructor(
     }
 
     override suspend fun getLastGoal(): Goal? = goalDao.getLastGoal()
+
+    override fun getGoalBeforeDate(date: Date): Flow<Goal?> = goalDao.getGoalBeforeDate(date)
 
     override fun getLastGoalFlow(): Flow<Goal?> = goalDao.getLastGoalFlow()
 

@@ -21,9 +21,5 @@ interface DateRecordDao {
 
     @Transaction
     @Query("SELECT * FROM date_record WHERE date = :date LIMIT 1")
-    fun getDateRecordAndGoalWithHydratedRecords(date: Date): Flow<DateRecordAndGoalWithHydratedRecords?>
-
-    @Transaction
-    @Query("SELECT * FROM date_record WHERE date = :date LIMIT 1")
-    fun getDateRecordAndGoalWithHydratedRecordAndBeverageList(date: Date): Flow<DateRecordAndGoalWithHydratedRecordAndBeverageList?>
+    fun getDateRecordWithHydratedRecordAndBeverageList(date: Date): Flow<DateRecordWithHydratedRecordAndBeverageList?>
 }

@@ -91,7 +91,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             val now = LocalDateTime.now()
             val date = convertToLocalDateTimeToDate(getStartOfDay(now))
-            dateRecordRepository.getDateRecordAndGoalWithHydratedRecords(date).collect {
+            dateRecordRepository.getDateRecordWithHydratedRecords(date).collect {
                 if (it != null) {
                     _uiState.value = _uiState.value.copy(
                         currentAmountOfHydration = sumOfHydratedAmount(it.hydratedRecords),

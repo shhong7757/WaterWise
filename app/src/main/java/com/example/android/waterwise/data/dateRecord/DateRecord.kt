@@ -20,17 +20,8 @@ data class DateRecordWithHydratedRecords(
     ) val hydratedRecords: List<HydratedRecord>
 )
 
-data class DateRecordAndGoalWithHydratedRecords(
+data class DateRecordWithHydratedRecordAndBeverageList(
     @Embedded val dateRecord: DateRecord,
-    @Relation(parentColumn = "goal_id", entityColumn = "goal_id") val goal: Goal,
-    @Relation(
-        parentColumn = "date_record_id", entityColumn = "date_record_id"
-    ) val hydratedRecords: List<HydratedRecord>
-)
-
-data class DateRecordAndGoalWithHydratedRecordAndBeverageList(
-    @Embedded val dateRecord: DateRecord,
-    @Relation(parentColumn = "goal_id", entityColumn = "goal_id") val goal: Goal,
     @Relation(
         entity = HydratedRecord::class,
         parentColumn = "date_record_id",

@@ -1,9 +1,6 @@
 package com.example.android.waterwise.data.dateRecord.impl
 
-import com.example.android.waterwise.data.dateRecord.DateRecord
-import com.example.android.waterwise.data.dateRecord.DateRecordDao
-import com.example.android.waterwise.data.dateRecord.DateRecordRepository
-import com.example.android.waterwise.data.dateRecord.DateRecordWithHydratedRecords
+import com.example.android.waterwise.data.dateRecord.*
 import kotlinx.coroutines.flow.Flow
 import java.util.*
 import javax.inject.Inject
@@ -24,10 +21,6 @@ class RoomDateRecordRepository @Inject constructor(
     override fun getDateRecordWithHydratedRecords(date: Date): Flow<DateRecordWithHydratedRecords?> =
         dateRecordDao.getDateRecordWithHydratedRecords(date)
 
-
-    override fun getDateRecordAndGoalWithHydratedRecords(date: Date) =
-        dateRecordDao.getDateRecordAndGoalWithHydratedRecords(date)
-
-    override fun getDateRecordAndGoalWithHydratedRecordAndBeverageList(date: Date) =
-        dateRecordDao.getDateRecordAndGoalWithHydratedRecordAndBeverageList(date)
+    override fun getDateRecordWithHydratedRecordAndBeverageList(date: Date): Flow<DateRecordWithHydratedRecordAndBeverageList?> =
+        dateRecordDao.getDateRecordWithHydratedRecordAndBeverageList(date)
 }

@@ -27,16 +27,30 @@ class RecordViewModel @Inject constructor(
     val uiState: StateFlow<RecordUiState> = _uiState
 
     init {
+        fetchGoalFromSelecteDate(uiState.value.selectedDate)
+
         updateSelectedDate(uiState.value.selectedDate)
         updateWeekRange(uiState.value.selectedDate)
+    }
+
+    fun fetchGoalFromSelecteDate(date: LocalDateTime) {
+        viewModelScope.launch {
+            goalRepository.getGoalBeforeDate(
+                convertToLocalDateTimeToDate(
+                    getStartOfDay(date)
+                )
+            ).collect {
+                _uiState.value = _uiState.value.copy(goalHydrationAmount = it?.value ?: 0)
+            }
+        }
     }
 
     fun updateSelectedDate(date: LocalDateTime) {
         viewModelScope.launch {
             val start = convertToLocalDateTimeToDate(getStartOfDay(date))
-            dateRecordRepository.getDateRecordAndGoalWithHydratedRecordAndBeverageList(start)
-                .collect { dateRecordAndGoalWithHydratedRecordAndBeverageList ->
-                    if (dateRecordAndGoalWithHydratedRecordAndBeverageList == null) {
+            dateRecordRepository.getDateRecordWithHydratedRecordAndBeverageList(start)
+                .collect { dateRecordWithHydratedRecordAndBeverageList ->
+                    if (dateRecordWithHydratedRecordAndBeverageList == null) {
                         val goal = goalRepository.getLastGoal()
                         _uiState.value = _uiState.value.copy(
                             selectedDate = date, goalHydrationAmount = goal?.value ?: 0,
@@ -44,7 +58,7 @@ class RecordViewModel @Inject constructor(
                             totalHydrationAmount = 0,
                         )
                     } else {
-                        dateRecordAndGoalWithHydratedRecordAndBeverageList.hydratedRecordAndBeverageList.map { hydratedRecordAndBeverage ->
+                        dateRecordWithHydratedRecordAndBeverageList.hydratedRecordAndBeverageList.map { hydratedRecordAndBeverage ->
                             val hydratedRecord = hydratedRecordAndBeverage.hydratedRecord
                             val beverage = hydratedRecordAndBeverage.beverage
                             val formattedDate =
@@ -59,7 +73,6 @@ class RecordViewModel @Inject constructor(
                             )
                         }.let {
                             _uiState.value = _uiState.value.copy(selectedDate = date,
-                                goalHydrationAmount = dateRecordAndGoalWithHydratedRecordAndBeverageList.goal.value,
                                 timeline = it,
                                 totalHydrationAmount = it.fold(0) { acc, curr ->
                                     acc + curr.amount

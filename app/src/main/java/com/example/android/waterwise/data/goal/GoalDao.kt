@@ -17,4 +17,7 @@ interface GoalDao {
 
     @Query("SELECT * FROM goal WHERE goal_id = :id LIMIT 1")
     fun getGoal(id: Long): Flow<Goal>
+
+    @Query("SELECT * FROM goal WHERE date <= :date ORDER BY goal_id DESC LIMIT 1")
+    fun getGoalBeforeDate(date:Date): Flow<Goal>
 }

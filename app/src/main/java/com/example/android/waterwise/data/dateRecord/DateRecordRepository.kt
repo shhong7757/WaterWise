@@ -8,6 +8,5 @@ interface DateRecordRepository {
     suspend fun updateDateRecord(dateRecord: DateRecord)
     suspend fun getDateRecord(date: Date): DateRecord?
     fun getDateRecordWithHydratedRecords(date: Date): Flow<DateRecordWithHydratedRecords?>
-    fun getDateRecordAndGoalWithHydratedRecords(date: Date): Flow<DateRecordAndGoalWithHydratedRecords?>
-    fun getDateRecordAndGoalWithHydratedRecordAndBeverageList(date: Date): Flow<DateRecordAndGoalWithHydratedRecordAndBeverageList?>
+    fun getDateRecordWithHydratedRecordAndBeverageList(date: Date): Flow<DateRecordWithHydratedRecordAndBeverageList?>
 }
