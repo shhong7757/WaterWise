@@ -55,7 +55,6 @@ fun RecordScreen(viewModel: RecordViewModel = hiltViewModel()) {
                                     fontWeight = if (localDateTime.dayOfMonth == uiState.selectedDate.dayOfMonth) FontWeight.Bold else FontWeight.Normal
                                 )
                             }
-
                         }
                     }
                 }

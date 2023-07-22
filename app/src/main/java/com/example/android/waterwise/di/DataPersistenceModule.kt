@@ -14,6 +14,8 @@ import com.example.android.waterwise.DATA_STORE_FILE_NAME
 import com.example.android.waterwise.USER_PREFERENCES_NAME
 import com.example.android.waterwise.data.*
 import com.example.android.waterwise.data.beverage.BeverageDao
+import com.example.android.waterwise.data.dateRecord.DateRecordDao
+import com.example.android.waterwise.data.goal.GoalDao
 import com.example.android.waterwise.data.hydratedrecord.HydratedRecordDao
 import com.example.android.waterwise.data.hydratepreset.HydratePresetDao
 import com.example.android.waterwise.data.profile.UserProfileSerializer
@@ -64,6 +66,16 @@ class DataPersistenceModule {
     @Provides
     fun provideBeverageDao(database: WaterWiseDatabase): BeverageDao {
         return database.beverageDao()
+    }
+
+    @Provides
+    fun provideDateRecordDao(database: WaterWiseDatabase): DateRecordDao {
+        return database.dateRecordDao()
+    }
+
+    @Provides
+    fun provideGoalDao(database: WaterWiseDatabase): GoalDao {
+        return database.goalDao()
     }
 
     @Provides

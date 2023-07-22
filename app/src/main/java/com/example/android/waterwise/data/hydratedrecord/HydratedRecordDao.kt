@@ -1,8 +1,6 @@
 package com.example.android.waterwise.data.hydratedrecord
 
 import androidx.room.*
-import kotlinx.coroutines.flow.Flow
-import java.util.*
 
 @Dao
 interface HydratedRecordDao {
@@ -14,13 +12,4 @@ interface HydratedRecordDao {
 
     @Delete
     suspend fun delete(hydratedRecord: HydratedRecord)
-
-    @Query("SELECT * from hydrated_record WHERE date >= :start AND date <= :end")
-    fun getAllHydratedRecordByDate(start: Date, end: Date): Flow<List<HydratedRecord>>
-
-    @Transaction
-    @Query("SELECT * from hydrated_record WHERE date >= :start AND date <= :end")
-    fun getAllHydratedRecordAndBeverageByDate(
-        start: Date, end: Date
-    ): Flow<List<HydratedRecordAndBeverage>>
 }

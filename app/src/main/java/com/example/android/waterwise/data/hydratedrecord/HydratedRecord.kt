@@ -9,6 +9,7 @@ data class HydratedRecord(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "hydrated_record_id") val id: Long = 0,
     @ColumnInfo(name = "amount") val amount: Int,
     @ColumnInfo(name = "beverage_id") val beverageId: Long,
+    @ColumnInfo(name = "date_record_id") val dateRecordId: Long,
     @ColumnInfo(name = "date") val date: Date,
 )
 

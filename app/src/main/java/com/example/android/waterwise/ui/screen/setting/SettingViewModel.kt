@@ -2,8 +2,7 @@ package com.example.android.waterwise.ui.screen.setting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.android.waterwise.data.preferences.impl.DataStoreUserPreferencesRepository
-import com.example.android.waterwise.model.Sex
+import com.example.android.waterwise.data.goal.impl.RoomGoalRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,33 +11,28 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
-    private val userPreferencesRepository: DataStoreUserPreferencesRepository
+    private val goalRepository: RoomGoalRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(
         SettingUiState(
-            goalHydrationAmount = 2000, height = null, weight = null, sex = null
+            goalHydrationAmount = 2000
         )
     )
     val uiState: StateFlow<SettingUiState> = _uiState
 
     init {
-        fetUserProfile()
+        fetchGoal()
     }
 
-    private fun fetUserProfile() {
+    private fun fetchGoal() {
         viewModelScope.launch {
-            userPreferencesRepository.getUserProfile().collect {
-                _uiState.value = _uiState.value.copy(
-                    goalHydrationAmount = it.goalHydrationAmount,
-                    height = it.height,
-                    weight = it.width,
-                    sex = it.sex
-                )
+            goalRepository.getLastGoalFlow().collect() {
+                _uiState.value = _uiState.value.copy(goalHydrationAmount = it.value)
             }
         }
     }
 }
 
 data class SettingUiState(
-    val goalHydrationAmount: Int, val height: Int?, val weight: Int?, val sex: Sex?
+    val goalHydrationAmount: Int
 )
