@@ -27,7 +27,7 @@ class SettingViewModel @Inject constructor(
     private fun fetchGoal() {
         viewModelScope.launch {
             goalRepository.getLastGoalFlow().collect() {
-                _uiState.value = _uiState.value.copy(goalHydrationAmount = it.value)
+                _uiState.value = _uiState.value.copy(goalHydrationAmount = it?.value ?: 0)
             }
         }
     }

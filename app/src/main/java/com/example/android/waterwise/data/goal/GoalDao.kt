@@ -7,13 +7,13 @@ import java.util.*
 @Dao
 interface GoalDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(goal: Goal): Long
+    suspend fun insert(goal:Goal): Long
 
     @Query("SELECT * FROM goal ORDER BY goal_id DESC LIMIT 1")
-    suspend fun getLastGoal(): Goal
+    suspend fun getLastGoal(): Goal?
 
     @Query("SELECT * FROM goal ORDER BY goal_id DESC LIMIT 1")
-    fun getLastGoalFlow(): Flow<Goal>
+    fun getLastGoalFlow(): Flow<Goal?>
 
     @Query("SELECT * FROM goal WHERE goal_id = :id LIMIT 1")
     fun getGoal(id: Long): Flow<Goal>

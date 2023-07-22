@@ -37,9 +37,9 @@ class RecordViewModel @Inject constructor(
             dateRecordRepository.getDateRecordAndGoalWithHydratedRecordAndBeverageList(start)
                 .collect { dateRecordAndGoalWithHydratedRecordAndBeverageList ->
                     if (dateRecordAndGoalWithHydratedRecordAndBeverageList == null) {
+                        val goal = goalRepository.getLastGoal()
                         _uiState.value = _uiState.value.copy(
-                            selectedDate = date,
-                            goalHydrationAmount = goalRepository.getLastGoal().value,
+                            selectedDate = date, goalHydrationAmount = goal?.value ?: 0,
                             timeline = listOf(),
                             totalHydrationAmount = 0,
                         )

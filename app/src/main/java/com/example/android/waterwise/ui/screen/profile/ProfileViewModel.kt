@@ -2,7 +2,6 @@ package com.example.android.waterwise.ui.screen.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.android.waterwise.data.goal.Goal
 import com.example.android.waterwise.data.goal.impl.RoomGoalRepository
 import com.example.android.waterwise.data.preferences.impl.DataStoreUserPreferencesRepository
 import com.example.android.waterwise.model.Sex
@@ -32,7 +31,7 @@ class ProfileViewModel @Inject constructor(
     private fun fetchGoal() {
         viewModelScope.launch {
             goalRepository.getLastGoalFlow().collect() {
-                _uiState.value = _uiState.value.copy(goalHydrationAmount = it.value)
+                _uiState.value = _uiState.value.copy(goalHydrationAmount = it?.value ?: 0)
             }
         }
     }
@@ -49,7 +48,7 @@ class ProfileViewModel @Inject constructor(
 
     fun setGoalHydrationAmount(goalHydrationAmount: Int) {
         viewModelScope.launch {
-            goalRepository.insert(Goal(value = goalHydrationAmount))
+            goalRepository.insert(goal = goalHydrationAmount)
             _uiState.value = _uiState.value.copy(goalHydrationAmount = goalHydrationAmount)
         }
     }

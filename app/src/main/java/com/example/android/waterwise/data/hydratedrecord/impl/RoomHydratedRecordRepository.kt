@@ -25,22 +25,25 @@ class RoomHydratedRecordRepository @Inject constructor(
             val startOfDay = convertToLocalDateTimeToDate(
                 getStartOfDay(now)
             )
-            val dateRecordId = when (val dateRecord = dateRecordDao.getDateRecord(startOfDay)) {
-                null -> dateRecordDao.insert(
-                    DateRecord(
-                        date = startOfDay, goalId = goal.id
+
+            if (goal != null) {
+                val dateRecordId = when (val dateRecord = dateRecordDao.getDateRecord(startOfDay)) {
+                    null -> dateRecordDao.insert(
+                        DateRecord(
+                            date = startOfDay, goalId = goal.id
+                        )
+                    )
+                    else -> dateRecord.id
+                }
+                hydratedRecordDao.insert(
+                    HydratedRecord(
+                        amount = amount,
+                        beverageId = beverage_id,
+                        dateRecordId = dateRecordId,
+                        date = convertToLocalDateTimeToDate(now)
                     )
                 )
-                else -> dateRecord.id
             }
-            hydratedRecordDao.insert(
-                HydratedRecord(
-                    amount = amount,
-                    beverageId = beverage_id,
-                    dateRecordId = dateRecordId,
-                    date = convertToLocalDateTimeToDate(now)
-                )
-            )
         }
 
     override suspend fun updateHydratedRecord(hydratedRecord: HydratedRecord) =

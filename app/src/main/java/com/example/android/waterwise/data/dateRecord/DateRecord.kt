@@ -13,6 +13,13 @@ data class DateRecord(
     @ColumnInfo(name = "goal_id") val goalId: Long
 )
 
+data class DateRecordWithHydratedRecords(
+    @Embedded val dateRecord: DateRecord,
+    @Relation(
+        parentColumn = "date_record_id", entityColumn = "date_record_id"
+    ) val hydratedRecords: List<HydratedRecord>
+)
+
 data class DateRecordAndGoalWithHydratedRecords(
     @Embedded val dateRecord: DateRecord,
     @Relation(parentColumn = "goal_id", entityColumn = "goal_id") val goal: Goal,

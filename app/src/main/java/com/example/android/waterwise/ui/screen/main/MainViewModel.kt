@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.waterwise.data.beverage.BeverageRepository
 import com.example.android.waterwise.data.dateRecord.DateRecordRepository
+import com.example.android.waterwise.data.goal.impl.RoomGoalRepository
 import com.example.android.waterwise.data.hydratedrecord.impl.RoomHydratedRecordRepository
 import com.example.android.waterwise.util.convertToLocalDateTimeToDate
 import com.example.android.waterwise.util.getStartOfDay
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val dateRecordRepository: DateRecordRepository,
     private val beverageRepository: BeverageRepository,
+    private val goalRepository: RoomGoalRepository,
     private val hydratedRecordRepository: RoomHydratedRecordRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(
@@ -32,9 +34,19 @@ class MainViewModel @Inject constructor(
     val uiState: StateFlow<MainUiState> = _uiState
 
     init {
+        fetchLastGoal()
         fetchBeverageList()
         fetchBeveragePresetList()
         fetchHydratedRecord()
+    }
+
+    private fun fetchLastGoal() {
+        viewModelScope.launch {
+            goalRepository.getLastGoalFlow().collect {
+                _uiState.value =
+                    _uiState.value.copy(goalHydrationAmount = it?.value ?: 0)
+            }
+        }
     }
 
     private fun fetchBeverageList() {
@@ -83,10 +95,8 @@ class MainViewModel @Inject constructor(
                 if (it != null) {
                     _uiState.value = _uiState.value.copy(
                         currentAmountOfHydration = sumOfHydratedAmount(it.hydratedRecords),
-                        goalHydrationAmount = it.goal.value
                     )
                 }
-
             }
         }
     }
