@@ -15,8 +15,8 @@ import com.example.android.waterwise.data.beverage.Beverage
     )]
 )
 data class HydratePreset(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "hydrate_preset_id") val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "hydrate_preset_id") val id: Long = 0,
     @ColumnInfo(name = "amount") val amount: Int,
-    @ColumnInfo(name = "beverage_id") val beverageId: Int,
+    @ColumnInfo(name = "beverage_id") val beverageId: Long,
     @ColumnInfo(name = "nickname") val nickname: String,
 )
