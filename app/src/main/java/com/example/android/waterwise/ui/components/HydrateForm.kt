@@ -50,7 +50,7 @@ fun HydrateForm(
         Row() {
             beverageOptions.map { beverageOption ->
                 BeverageOptionListItem(beverageOption,
-                    selected = (selectedBeverageOption.value == beverageOption),
+                    selected = ((selectedBeverageOption.value?.beverageId == beverageOption.beverageId)),
                     onSelectBeverageOption = { selectedBeverageOption.value = beverageOption })
             }
         }
