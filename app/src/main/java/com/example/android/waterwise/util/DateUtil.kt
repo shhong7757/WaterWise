@@ -3,13 +3,23 @@ package com.example.android.waterwise.util
 import com.example.android.waterwise.model.Day
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
-import java.time.LocalDate
+import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
 
 fun convertToLocalDateTimeToDate(localDateTime: LocalDateTime): Date {
     return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant())
+}
+
+fun convertLongToLocalDateTime(timestamp: Long): LocalDateTime {
+    val instant: Instant = Instant.ofEpochMilli(timestamp)
+    return instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
+}
+
+fun convertLocalDateTimeToLong(localDateTime: LocalDateTime): Long {
+    val instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant()
+    return instant.toEpochMilli()
 }
 
 fun getStartOfDay(date: LocalDateTime): LocalDateTime {
